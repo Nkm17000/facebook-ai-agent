@@ -1,7 +1,11 @@
 from fastapi import FastAPI
 from app.agent import say_hello
 import logging
+from dotenv import load_dotenv
+import os
 
+# Load .env file
+load_dotenv()
 
 # Configure logging
 logging.basicConfig(
@@ -20,6 +24,8 @@ app = FastAPI(
 @app.get("/")
 def home():
     logger.info("Home API called")
+    facebook_page_id = os.getenv("FACEBOOK_PAGE_ID")
+    logger.info(f"id : {facebook_page_id}")
     return {
         "message": "Hello World!"
     }
