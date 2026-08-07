@@ -1,18 +1,21 @@
-name: Facebook AI Agent
+name: Hello API
 
 on:
-  schedule:
-    # Every day at 9:00 AM IST (3:30 AM UTC)
-    - cron: '30 3 * * *'
+  push:
+    branches:
+      - main
 
   workflow_dispatch:
 
 jobs:
-  run-agent:
+
+  test:
+
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Python
@@ -20,15 +23,24 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install Dependencies
+      - name: Install Packages
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Agent
-        env:
-          FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
-          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      - name: Start FastAPI
         run: |
-          python app/main.py
+          uvicorn app.main:app --host 0.0.0.0 --port 8000 &
+          sleep 5
+
+      - name: Test Home API
+        run: |
+          curl http://localhost:8000/
+
+      - name: Test Health API
+        run: |
+          curl http://localhost:8000/health
+
+      - name: Test Agent API
+        run: |
+          curl http://localhost:8000/agent
