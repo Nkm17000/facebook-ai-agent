@@ -7,6 +7,10 @@ on:
 
   workflow_dispatch:
 
+  schedule:
+    # Every 5 minutes
+    - cron: "*/5 * * * *"
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -61,5 +65,5 @@ jobs:
       - name: Upload Logs
         uses: actions/upload-artifact@v4
         with:
-          name: uvicorn-log
+          name: uvicorn-log-${{ github.run_number }}
           path: uvicorn.log
