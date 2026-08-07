@@ -1,44 +1,56 @@
-from fastapi import FastAPI
-from app.agent import say_hello
-import logging
-from dotenv import load_dotenv
-import os
+from fastapi import FastAPI, HTTPException
 
-# Load .env file
-load_dotenv()
+from app.agent_service import AgentService
+from app.config import Config
+from app.logger import logger
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s | %(levelname)s | %(name)s | %(message)s"
-)
-
-logger = logging.getLogger(__name__)
+# Validate configuration at startup
+Config.validate()
 
 app = FastAPI(
     title="Facebook Agent",
-    version="1.0"
+    version="1.0.0"
 )
 
 
 @app.get("/")
 def home():
     logger.info("Home API called")
-    facebook_page_id = os.getenv("FACEBOOK_PAGE_ID")
-    logger.info(f"id : {facebook_page_id}")
-    logger.info(f"Last 4 chars: {facebook_page_id[-4:]}")
+
     return {
-        "message": "Hello World!" + facebook_page_id
+        "message": "Welcome to Facebook Agent",
+        "status": "UP",
+        "version": app.version
     }
 
 
 @app.get("/agent")
-def agent():
-    return say_hello()
+def run_agent():
+    logger.info("Agent execution started")
+
+    try:
+        response = AgentService.publish()
+
+        logger.info("Agent execution completed successfully")
+
+        return {
+            "status": "SUCCESS",
+            "response": response
+        }
+
+    except Exception as ex:
+        logger.exception("Agent execution failed")
+
+        raise HTTPException(
+            status_code=500,
+            detail=str(ex)
+        )
 
 
 @app.get("/health")
 def health():
+    logger.info("Health API called")
+
     return {
         "status": "UP"
     }
