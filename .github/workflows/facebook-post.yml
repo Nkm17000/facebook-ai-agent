@@ -29,7 +29,38 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Verify Environment Variables
+        env:
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+          FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          if [ -z "$FACEBOOK_PAGE_ID" ]; then
+            echo "❌ FACEBOOK_PAGE_ID is NOT available"
+            exit 1
+          else
+            echo "✅ FACEBOOK_PAGE_ID is available"
+          fi
+
+          if [ -z "$FACEBOOK_PAGE_TOKEN" ]; then
+            echo "❌ FACEBOOK_PAGE_TOKEN is NOT available"
+            exit 1
+          else
+            echo "✅ FACEBOOK_PAGE_TOKEN is available"
+          fi
+
+          if [ -z "$GROQ_API_KEY" ]; then
+            echo "❌ GROQ_API_KEY is NOT available"
+            exit 1
+          else
+            echo "✅ GROQ_API_KEY is available"
+          fi
+
       - name: Start FastAPI
+        env:
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+          FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: |
           nohup python -m uvicorn app.main:app \
             --host 0.0.0.0 \
