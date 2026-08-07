@@ -19,7 +19,7 @@ class AgentService:
             response = client.chat.completions.create(
                 model=Config.MODEL,
                 messages=messages,
-                temperature=0.8
+                temperature=1.2
             )
 
             lesson = response.choices[0].message.content
