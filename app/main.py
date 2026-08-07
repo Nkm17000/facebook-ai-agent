@@ -27,7 +27,7 @@ def home():
     facebook_page_id = os.getenv("FACEBOOK_PAGE_ID")
     logger.info(f"id : {facebook_page_id}")
     return {
-        "message": "Hello World!"
+        "message": "Hello World!" + facebook_page_id
     }
 
 
