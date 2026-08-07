@@ -26,6 +26,7 @@ def home():
     logger.info("Home API called")
     facebook_page_id = os.getenv("FACEBOOK_PAGE_ID")
     logger.info(f"id : {facebook_page_id}")
+    logger.info(f"Last 4 chars: {facebook_page_id[-4:]}")
     return {
         "message": "Hello World!" + facebook_page_id
     }
