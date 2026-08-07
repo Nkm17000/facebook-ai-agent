@@ -1,4 +1,4 @@
-from app.prompt_bkp import prompt
+from app.prompt import prompt
 
 messages = [
     {
