@@ -1,5 +1,15 @@
 from fastapi import FastAPI
 from app.agent import say_hello
+import logging
+
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)s | %(name)s | %(message)s"
+)
+
+logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title="Facebook Agent",
@@ -9,6 +19,7 @@ app = FastAPI(
 
 @app.get("/")
 def home():
+    logger.info("Home API called")
     return {
         "message": "Hello World!"
     }
