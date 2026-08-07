@@ -1,4 +1,4 @@
-prompt ="""Create an interactive General Science quiz for **{Exam Name}**.
+prompt =""" Create an interactive General Science quiz for **{Exam Name}**.
 
 Generate **one multiple-choice question at a time** with four options (A–D) and exactly one correct answer. Match the latest syllabus, exam pattern, and difficulty level of the selected exam. Cover topics from **Physics, Chemistry, Biology, Environmental Science, and Space Science**, choosing randomly unless a specific topic is requested.
 
