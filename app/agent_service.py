@@ -47,6 +47,7 @@ class AgentService:
             lesson = AgentService.generate_post()
 
             logger.info("Posting lesson to Facebook")
+            logger.info(lesson)
 
             response = FacebookService.post_to_facebook(
                 message=lesson
